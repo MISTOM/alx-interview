@@ -1,17 +1,25 @@
 #!/usr/bin/node
-const request = require('request')
+const request = require('request');
+const BASE_SWAPI = 'https://swapi-api.hbtn.io/api';
 
-const movie_id = process.argv[2]
-const BASE_SWAPI = 'https://swapi-api.hbtn.io/api/'
+if (process.argv.length > 2) {
+  request(`${BASE_SWAPI}/films/${process.argv[2]}/`, (err, _, body) => {
+    if (err) {
+      console.log(err);
+    }
+    const charactersURL = JSON.parse(body).characters;
+    const charactersName = charactersURL.map(
+      url => new Promise((resolve, reject) => {
+        request(url, (promiseErr, __, charactersReqBody) => {
+          if (promiseErr) {
+            reject(promiseErr);
+          }
+          resolve(JSON.parse(charactersReqBody).name);
+        });
+      }));
 
-console.log(movie_id)
-if (movie_id === undefined){
-    console.error('Pass in a movie ID (number)\n\t ./0-starwars_characters.js 3')
-    process.exit(1)
+    Promise.all(charactersName)
+      .then(names => console.log(names.join('\n')))
+      .catch(allErr => console.log(allErr));
+  });
 }
-
-/**
- * Prints all characters' names in the characters enpoints
- * @param {array} characters array of characters enpoints
- */
-
