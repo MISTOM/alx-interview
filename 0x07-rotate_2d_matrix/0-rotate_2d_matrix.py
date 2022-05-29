@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """Rotate 2D matrix module
 """
-from typing import List
+# from typing import List
 
 
-def rotate_2d_matrix(matrix: List[List[int]]):
+def rotate_2d_matrix(matrix):
     """Rotates a 2D matrix 90 Degrees Clockwise"""
     l = 0
     r = len(matrix) - 1
