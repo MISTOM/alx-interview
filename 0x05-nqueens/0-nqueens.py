@@ -67,6 +67,7 @@ def group_exists(group):
             return True
     return False
 
+
 def build_solution(row, group):
     """Builds a solution for the n queens problem.
     Args:
